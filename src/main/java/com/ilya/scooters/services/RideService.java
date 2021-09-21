@@ -1,7 +1,9 @@
 package com.ilya.scooters.services;
 
+import com.ilya.scooters.components.Utils;
 import com.ilya.scooters.entities.Ride;
-import com.ilya.scooters.entities.User;
+import com.ilya.scooters.objects.Route;
+import com.ilya.scooters.objects.RoutePoint;
 import com.ilya.scooters.repos.RideRepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,16 @@ public class RideService {
         return rideRepos.save(ride);
     }
 
+
+    public void updateRouteAddPoint(long id, RoutePoint point) {
+        Ride ride = rideRepos.findById(id).orElseThrow(() -> new RuntimeException("No object with given id") );
+        Route route = ride.getRoute();
+        route.getRoutePoints().add(point);
+        ride.setDistance(Utils.countDistance(ride));
+        ride.setDuration(Utils.countDuration(ride));
+        ride.setCost(Utils.countCost(ride));
+        rideRepos.save(ride);
+    }
 
 
 }

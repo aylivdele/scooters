@@ -2,9 +2,18 @@ package com.ilya.scooters.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.ilya.scooters.objects.Route;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
+@TypeDefs(
+        @TypeDef(name = "json-attr", typeClass = JsonBinaryType.class)
+)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -13,47 +22,70 @@ public class Ride {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    double distance;
+    private long duration;
 
-    double startLongitude;
-    double startLatitude;
-    double finishLongitude;
-    double finishLatitude;
+    private double distance;
 
-    double cost;
+    private double cost;
 
-    int duration;
+    private LocalDateTime startTime;
 
-    @ManyToOne
-    @JoinColumn
-    Scooter scooter;
+    private LocalDateTime finishTime;
 
     @ManyToOne
     @JoinColumn
-    User user;
+    private Scooter scooter;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
+    @Type(type = "json-attr")
+    private Route route;
 
     public Ride() {
     }
 
-    public Ride(double startLongitude, double startLatitude, Scooter scooter, User user) {
-        this.startLongitude = startLongitude;
-        this.startLatitude = startLatitude;
+    public Ride(Scooter scooter, User user) {
         this.scooter = scooter;
         this.user = user;
     }
 
-    public Ride(double distance, double startLongitude, double startLatitude, double finishLongitude, double finishLatitude, double cost, int duration, Scooter scooter, User user) {
-        this.distance = distance;
-        this.startLongitude = startLongitude;
-        this.startLatitude = startLatitude;
-        this.finishLongitude = finishLongitude;
-        this.finishLatitude = finishLatitude;
-        this.cost = cost;
+    public Ride(long duration, double distance, double cost, Scooter scooter, User user, Route route, LocalDateTime startTime, LocalDateTime finishTime) {
         this.duration = duration;
+        this.distance = distance;
+        this.cost = cost;
         this.scooter = scooter;
         this.user = user;
+        this.route = route;
+        this.startTime = startTime;
+        this.finishTime = finishTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(LocalDateTime finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public Long getId() {
@@ -64,12 +96,12 @@ public class Ride {
         this.id = id;
     }
 
-    public int getDuration() {
-        return duration;
+    public Route getRoute() {
+        return route;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     public double getDistance() {
@@ -78,38 +110,6 @@ public class Ride {
 
     public void setDistance(double distance) {
         this.distance = distance;
-    }
-
-    public double getStartLongitude() {
-        return startLongitude;
-    }
-
-    public void setStartLongitude(double startLongitude) {
-        this.startLongitude = startLongitude;
-    }
-
-    public double getStartLatitude() {
-        return startLatitude;
-    }
-
-    public void setStartLatitude(double startLatitude) {
-        this.startLatitude = startLatitude;
-    }
-
-    public double getFinishLongitude() {
-        return finishLongitude;
-    }
-
-    public void setFinishLongitude(double finishLongitude) {
-        this.finishLongitude = finishLongitude;
-    }
-
-    public double getFinishLatitude() {
-        return finishLatitude;
-    }
-
-    public void setFinishLatitude(double finishLatitude) {
-        this.finishLatitude = finishLatitude;
     }
 
     public double getCost() {

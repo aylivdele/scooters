@@ -15,12 +15,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
     @OneToMany(targetEntity = Ride.class, mappedBy = "user")
-    List<Ride> rides;
+    private List<Ride> rides;
 
     public User(String name) {
         this.name = name;

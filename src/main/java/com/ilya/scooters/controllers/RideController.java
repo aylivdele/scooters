@@ -1,8 +1,7 @@
 package com.ilya.scooters.controllers;
 
 import com.ilya.scooters.entities.Ride;
-import com.ilya.scooters.entities.Scooter;
-import com.ilya.scooters.entities.User;
+import com.ilya.scooters.objects.RoutePoint;
 import com.ilya.scooters.services.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +40,10 @@ public class RideController {
         return ResponseEntity.ok("Success");
     }
 
-
+    @PatchMapping("/rides/{id}/route")
+    public ResponseEntity<String> updateRouteAddPoint(@RequestBody RoutePoint point, @PathVariable long id){
+        rideService.updateRouteAddPoint(id, point);
+        return ResponseEntity.ok("Success");
+    }
 
 }

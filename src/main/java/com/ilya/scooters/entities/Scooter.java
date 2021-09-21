@@ -14,20 +14,22 @@ public class Scooter {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String model;
+    @ManyToOne
+    @JoinColumn
+    private ScooterModel model;
 
-    double charge;
+    private double charge;
 
 
     @OneToMany(targetEntity = Ride.class, mappedBy = "scooter")
-    List<Ride> rides;
+    private List<Ride> rides;
 
     public Scooter() {
     }
 
-    public Scooter(String model, double charge) {
+    public Scooter(ScooterModel model, double charge) {
         this.model = model;
         this.charge = charge;
     }
@@ -40,11 +42,11 @@ public class Scooter {
         this.id = id;
     }
 
-    public String getModel() {
+    public ScooterModel getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(ScooterModel model) {
         this.model = model;
     }
 
